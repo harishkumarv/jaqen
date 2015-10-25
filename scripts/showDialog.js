@@ -1,103 +1,72 @@
-var modalCss = {
-    "position":"absolute",
-    "width":"100%",
-    "height":"100%",
-    "background-color":"#000",
-    "z-index":"10000",
-    "opacity":"0.7",
-    "top":"0",
-    "left":"0",
-    "box-sizing": "border-box",
-    "padding": "10%"
-};
+var modal, modalContent, titleBar, usersList, currentUser, userItem, currentUser = user;
 
-var divCss = {
-    "position":"absolute",
-    "width":"700px",
-    "height":"300px",
-    "top":"0",
-    "left":"0",
-    "right": "0",
-    "background-color":"#fff",
-    "z-index":"10001",
-    "box-sizing": "border-box",
-    "margin": "50px auto 50px auto",
-    "overflow": "auto",
-    "padding":"8px",
-    "border-radius":"8px",
-    "background-color":"black",
-    "min-width":"300px"
-};
+function closeDialog() {
+    modal.remove();
+    modalContent.remove();
+}
 
-var userCss = {
-    "display": "inline-block",
-    "margin":"10px",
-    "box-sizing": "border-box",
-    "width":"100px",
-    "text-align":"center"
-};
-
-var buttonDiv = $("<div>");
-buttonDiv.css({
+//construction the modal.
+modal = $("<div>");
+modal.css({
+    "position": "absolute",
     "width": "100%",
-    "padding":"20px",
-    "background-color":"white"
+    "height": "100%",
+    "background-color": "black",
+    "z-index": 10000,
+    "opacity": 0.8,
+    "top": 0,
+    "left": 0,
+    "box-sizing": "border-box"
 });
-
-var modal = $("<div>");
-modal.css(modalCss);
-modal.addClass("choose");
 $("body").append(modal);
+modal.on("click", closeDialog);
 
-var div = $("<div>");
-$("body").append(div);
-div.css(divCss);
-div.append(buttonDiv);
-
-var grabUserBtn = $("<button>Save user</button>");
-buttonDiv.append(grabUserBtn);
-grabUserBtn.css({
-    "float":"right"
+//construction of modal content div.
+modalContent = $("<div>");
+modalContent.css({
+    "position": "absolute",
+    "width": "25%",
+    "height": "100%",
+    "top": "0px",
+    "right": "0px",
+    "z-index": "10001",
+    "box-sizing": "border-box",
+    "margin": "auto",
+    "overflow": "auto",
+    "min-width": "300px",
+    "background-color": "white"
 });
-$(grabUserBtn).on("click", function() {
-  store.addUser(user, function(){
-    alert("saved user.");
-  });
-});
+$("body").append(modalContent);
 
-var cancelBtn = $("<button>cancel</button>");
-buttonDiv.append(cancelBtn);
-$(cancelBtn).on("click", function() {
-  modal.remove();
-  buttonDiv.remove();
-  div.remove();
 
-});
+function faceItem(user) {
+    var item = $("<li>");
+    item.addClass("people-list-item");
+    item.data("session", user.session);
+    item.append($("<img>").attr("src", user.picture).addClass("people-list-item-avatar"));
+    item.append($("<span>" + user.id + "</span>").addClass("people-list-item-nick"));
+    return item;
+}
 
-var userList = $("<div>");
-div.append(userList);
-userList.css({
-    "background-color":"white",
-    "bottom":"0"
-});
+var listView = $("<div>");
+listView.addClass("list-view");
 
-var allUsers = store.getAllUsers(function(users){
-  if(users) Object.keys(users).forEach(function(user){
-    var userDiv = $("<div>");
-    var picture = $("<img>");
-    picture.css({
-        "border-radius": "5px"
+store.getAllUsers(function(users) {
+    var listUl = $("<ul>");
+    listUl.addClass("list-section");
+    var allUsers = Object.keys(users).map(function(u) {
+        return users[u];
     });
-    picture.attr("src", users[user].picture);
-    userDiv.append(picture);
-    var name = ("<div>"+users[user].id+"</div>");
-    userDiv.append(name)
-    userDiv.data("session", users[user].session);
-    userList.append(userDiv);
-    $(userDiv).css(userCss);
-    $(userDiv).on("click", function() {
-        localStorage.session = userDiv.data("session");
-        window.location.reload();
+
+    allUsers.forEach(function(u) {
+        var u = faceItem(u);
+        listUl.append(u);
+        u.on("click", function() {
+            localStorage.session = u.data("session");
+            window.location.reload();
+        });
     });
-  });
+    listView.append($("<h3>Faces</h3>").addClass("list-header"));
+    listView.append(listUl);
+    modalContent.append(listView);
 });

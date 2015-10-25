@@ -1,15 +1,16 @@
 var store  = (function() {
   var obj = {};
-  obj.addUser = function(user, callback) {
+  obj.addUser = function(user, shouldAlert, callback) {
     var item = {};
     if(user.isGuest) {
-        alert("Can't save guest");
+        shouldAlert && alert("Can't save guest");
         return;
     }
     item[user.session] = JSON.stringify(user);
     chrome.storage.local.set(item);
     callback && callback();
   };
+
   obj.getUser = function(id, callback) {
     var user = chrome.storage.local.get(id);
     user = JSON.parse(user);

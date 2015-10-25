@@ -17,16 +17,3 @@ chrome.browserAction.onClicked.addListener(function(tab) {
         });
     });
 });
-
-/*
-var modalDiv = $("<div>");
-var modalContent = $("<div>");
-var buttonsDiv = $("<div>");
-var usersList = $("<div>");
-var bodyTag = $("body");
-
-body.append(modalDiv);
-modalDiv.append(modalContent);
-
-
-*/

@@ -14,7 +14,7 @@
     "https://*/*"
   ],
   "background":{
-    "scripts": ["/assets/jquery-1.11.3.min.js", "index.js"],
+    "scripts": ["index.js"],
     "persistent":false
   }
 }
