@@ -50,17 +50,21 @@ function faceItem(user) {
 
 var listView = $("<div>");
 listView.addClass("list-view");
-
+listView.css({
+    "font-size":"18px"
+});
 store.getAllUsers(function(users) {
     var listUl = $("<ul>");
     listUl.addClass("list-section");
+
     var allUsers = Object.keys(users).map(function(u) {
         return users[u];
     });
 
     allUsers.forEach(function(u) {
-        var u = faceItem(u);
-        listUl.append(u);
+        var u = faceItem(u), listItemLi = $("<li>");
+        listItemLi.append(u).addClass("list-item");
+        listUl.append(listItemLi);
         u.on("click", function() {
             localStorage.session = u.data("session");
             window.location.reload();
