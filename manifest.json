@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Jaqen",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Use this extension to become a faceless man",
   "browser_action": {
     "default_icon": "assets/favicon.png"
@@ -15,7 +15,7 @@
   ],
   "content_scripts": [
     {
-      "matches": ["https://harry.scrollback.io/*"],
+      "matches": ["https://harry.scrollback.io/*", "https://scrollback.io/*", "https://heyneighbor.chat/*"],
       "js": ["/scripts/contentScript.js"]
     }
   ],
