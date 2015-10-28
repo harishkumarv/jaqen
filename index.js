@@ -1,6 +1,6 @@
 chrome.browserAction.onClicked.addListener(function(tab) {
     var domain = tab.url.replace(/.*\/\//,"").replace(/\/.*$/,"");
-    if(domain !== "heyneighbor.chat" && domain !== "scrollback.io" )  return alert("Not applicable for this site.");
+    if(domain !== "heyneighbor.chat" && domain !== "scrollback.io" && domain !== "harry.scrollback.io")  return alert("Not applicable for this site.");
     chrome.tabs.executeScript({
         file:"/assets/jquery-1.11.3.min.js"
     }, function(){
